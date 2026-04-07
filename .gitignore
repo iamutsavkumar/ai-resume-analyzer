@@ -1,0 +1,28 @@
+# Environment & Secrets
+.env
+*.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# Data files (optional — remove if you want to track history)
+data/results.csv
+
+# IDE
+.vscode/
+.idea/
+
+# macOS
+.DS_Store
+
+# Streamlit cache
+.streamlit/
