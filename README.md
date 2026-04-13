@@ -1,198 +1,168 @@
-# 📄 AI Resume Analyzer with Smart Feedback & Automation
+#  AI Resume Analyzer with Smart Feedback & Automation
 
-An intelligent resume analysis tool built with **Python**, **Streamlit**, and **OpenAI GPT-4o-mini**.
-Upload your resume, pick a target job role, and get instant AI-powered feedback with an overall score,
-section-wise analysis, missing skills, and rewritten bullet points.
+An intelligent resume analysis tool built with **Python**, **Streamlit**, and **AI (Gemini/OpenAI)**.
+Upload your resume, select a target role, and receive **instant, structured feedback** with scoring, improvements, and insights.
 
 ---
 
-## 🗂️ Project Structure
+##  UI Preview
+
+![UI Preview](assets/ui.png)
+
+---
+
+##  Features
+
+*  Upload PDF or paste resume text
+*  AI-powered resume scoring (0–100)
+*  Section-wise feedback (Skills, Experience, Projects, etc.)
+*  Missing skills detection for target role
+*  Bullet point improvement suggestions
+*  Auto-save analysis history (CSV)
+*  Sidebar history viewer
+*  Export analysis as PDF
+*  Automation-ready (n8n / Zapier workflows)
+
+---
+
+##  Project Structure
 
 ```
 ai_resume_analyzer/
 │
-├── app.py                   # 🚀 Main Streamlit app (entry point)
+├── app.py                   #  Main Streamlit app
 │
 ├── utils/
-│   ├── __init__.py          # Package marker
-│   ├── analyzer.py          # 🤖 OpenAI API call + prompt engineering
-│   ├── pdf_extractor.py     # 📄 PDF → text extraction
-│   ├── storage.py           # 💾 CSV read/write for history
-│   └── display.py           # 🎨 All Streamlit UI rendering functions
+│   ├── analyzer.py          #  AI analysis logic
+│   ├── pdf_extractor.py     #  PDF text extraction
+│   ├── storage.py           #  CSV storage + history
+│   └── display.py           #  UI rendering functions
+│
+├── assets/
+│   └── ui.png               #  UI preview image
 │
 ├── data/
-│   └── results.csv          # 📊 Auto-created; stores analysis history
+│   └── results.csv          #  Stored results
 │
-├── .streamlit/
-│   └── config.toml          # 🎨 Streamlit theme configuration
-│
-├── .env.example             # 🔑 Template for environment variables
-├── .gitignore               # 🚫 Files to exclude from Git
-├── requirements.txt         # 📦 Python dependencies
-└── README.md                # 📖 This file
+├── requirements.txt         #  Dependencies
+├── .env.example             #  Environment variables template
+└── README.md                #  Documentation
 ```
 
 ---
 
-## ✨ Features
+##  Quick Start
 
-| Feature | Description |
-|---|---|
-| 📤 Resume Input | Upload PDF or paste raw text |
-| 🤖 AI Analysis | GPT-powered score (0–100) + section feedback |
-| 🧩 Missing Skills | Skills absent from resume for the target role |
-| ✍️ Bullet Rewriter | Weak bullets rewritten with metrics + action verbs |
-| 💾 Auto Save | Every analysis saved to `data/results.csv` |
-| 📊 History Viewer | See past scores in the sidebar |
-| ⬇️ JSON Export | Download full analysis as JSON |
-| 🔗 Automation Guide | n8n / Zapier integration instructions |
-
----
-
-## ⚡ Quick Start (Step-by-Step)
-
-### Step 1: Clone or Download the Project
+### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourname/ai-resume-analyzer.git
+git clone https://github.com/your-username/ai-resume-analyzer.git
 cd ai_resume_analyzer
 ```
 
-Or just download and unzip it.
-
 ---
 
-### Step 2: Create a Virtual Environment (Recommended)
+### 2. Create Virtual Environment
 
 ```bash
-# Create virtual environment
 python -m venv venv
 
-# Activate it
-# On macOS/Linux:
-source venv/bin/activate
-
-# On Windows:
+# Activate
+# Windows:
 venv\Scripts\activate
+
+# Mac/Linux:
+source venv/bin/activate
 ```
 
 ---
 
-### Step 3: Install Dependencies
+### 3. Install Dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-This installs:
-- `streamlit` — for the web UI
-- `openai` — to talk to GPT
-- `PyMuPDF` + `pdfplumber` — for PDF text extraction
-- `pandas` — for CSV history storage
-
 ---
 
-### Step 4: Get an OpenAI API Key
+### 4. Add API Key
 
-1. Go to [platform.openai.com](https://platform.openai.com)
-2. Sign up or log in
-3. Navigate to **API Keys** → **Create new secret key**
-4. Copy the key (starts with `sk-...`)
-
-> **Cost:** GPT-4o-mini is very affordable — roughly $0.01–0.05 per resume analysis.
-
----
-
-### Step 5: Run the App
-
-```bash
-streamlit run app.py
-```
-
-Your browser will open automatically at `http://localhost:8501`
-
----
-
-### Step 6: Use the App
-
-1. **Enter your OpenAI API key** in the left sidebar
-2. **Select a target job role** (e.g., Software Engineer)
-3. **Upload a PDF resume** or paste text in the "Paste Text" tab
-4. Click **"🔍 Analyze My Resume"**
-5. Wait ~20–30 seconds for the AI to process
-6. Review your score, feedback, missing skills, and improved bullets
-7. Download the JSON or check `data/results.csv` for history
-
----
-
-## 🔑 Environment Variable (Optional)
-
-Instead of pasting your API key every time, create a `.env` file:
+Create `.env` file:
 
 ```bash
 cp .env.example .env
 ```
 
-Edit `.env`:
-```
-OPENAI_API_KEY=sk-your-actual-key-here
-```
+Then add:
 
-Then in `app.py`, you could auto-load it:
-```python
-from dotenv import load_dotenv
-import os
-load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY", "")
+```
+GEMINI_API_KEY=your_api_key_here
 ```
 
 ---
 
-## 🔗 Extending with n8n Automation
+### 5. Run the App
 
-See the **"Extend With Automation"** section at the bottom of the running app for detailed workflow diagrams. Quick summary:
-
-### Workflow 1: Auto Email Feedback
-```
-User submits resume → Webhook → AI Analyzer → Gmail/SendGrid → Email delivered
+```bash
+streamlit run app.py
 ```
 
-### Workflow 2: Track Improvement Over Time
-```
-Scheduled analysis → Google Sheets log → Monthly comparison → Email progress report
-```
-
-### Workflow 3: Job Match Alerts
-```
-Skills extracted → Job board API → Matching → Slack/Telegram notification
-```
+Open: http://localhost:8501
 
 ---
 
-## 🛠️ Troubleshooting
+##  How It Works
 
-| Problem | Fix |
-|---|---|
-| `ModuleNotFoundError` | Run `pip install -r requirements.txt` again |
-| `AuthenticationError` | Check your OpenAI API key — must start with `sk-` |
-| `RateLimitError` | Wait 60 seconds and retry |
-| PDF text is garbled | Try pasting the text manually instead |
-| App doesn't open | Make sure port 8501 isn't blocked; try `--server.port 8502` |
+1. Resume text is extracted from PDF or input
+2. Sent to AI model for structured analysis 
+3. JSON response is parsed and validated
+4. UI renders:
 
----
-
-## 🧑‍💻 Tech Stack
-
-- **Python 3.10+**
-- **Streamlit** — UI framework
-- **Google Gemini** — AI analysis engine
-- **PyMuPDF / pdfplumber** — PDF parsing
-- **Pandas** — CSV data storage
-- **n8n** (optional) — workflow automation
+   * Score
+   * Feedback
+   * Missing skills
+   * Improved bullets 
+5. Results stored locally in CSV 
 
 ---
 
-## 📄 License
+## 🛠️ Tech Stack
 
-MIT License. Free to use, modify, and distribute.
+* **Python**
+* **Streamlit**
+* **Google Gemini API**
+* **PyMuPDF / pdfplumber**
+* **Pandas**
 
+---
+
+##  Automation Ideas
+
+*  Auto-email resume feedback
+*  Track improvement over time
+*  Job match alerts
+
+(See automation section in app UI)
+
+---
+
+##  Troubleshooting
+
+| Issue            | Fix                    |
+| ---------------- | ---------------------- |
+| API key error    | Check key validity     |
+| PDF not reading  | Try pasting text       |
+| Module not found | Reinstall requirements |
+| App not opening  | Try different port     |
+
+---
+
+##  License
+
+MIT License — free to use and modify.
+
+---
+
+##  Author
+
+Built with ❤️ using Streamlit + AI
