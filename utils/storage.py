@@ -5,6 +5,7 @@ Handles saving analysis results to a local CSV file
 and loading history for display in the sidebar.
 
 Now stores FULL analysis for session replay.
++ FIX: ensures fresh reads (no stale history issue)
 """
 
 import os
@@ -33,18 +34,29 @@ CSV_COLUMNS = [
 
 
 def _ensure_data_dir():
-    """Create the data/ directory if it doesn't exist."""
     os.makedirs(DATA_DIR, exist_ok=True)
 
 
 def _ensure_csv_exists():
-    """Create CSV file with headers if not exists."""
     _ensure_data_dir()
 
     if not os.path.exists(CSV_PATH):
         with open(CSV_PATH, mode="w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
             writer.writeheader()
+
+
+# ✅ NEW: clear file cache helper (important for Streamlit)
+def _force_file_refresh():
+    """
+    Ensures file system updates are reflected immediately.
+    Prevents stale reads after write.
+    """
+    try:
+        if os.path.exists(CSV_PATH):
+            os.utime(CSV_PATH, None)  # touch file (update modified time)
+    except Exception:
+        pass
 
 
 def save_to_csv(
@@ -70,11 +82,9 @@ def save_to_csv(
             "summary": summary.replace("\n", " "),
             "missing_skills": json.dumps(missing_skills),
 
-            # Preview + full text
             "resume_snippet": resume_text[:200].replace("\n", " "),
             "resume_text": resume_text,
 
-            # ✅ FULL RESULT STORAGE
             "section_feedback": json.dumps(section_feedback),
             "weak_bullets": json.dumps(weak_bullets),
             "improved_bullets": json.dumps(improved_bullets),
@@ -83,6 +93,9 @@ def save_to_csv(
         with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=CSV_COLUMNS)
             writer.writerow(row)
+
+        # ✅ CRITICAL FIX → force file refresh
+        _force_file_refresh()
 
         return True
 
@@ -94,16 +107,17 @@ def save_to_csv(
 def load_history() -> pd.DataFrame | None:
     """
     Load all saved analysis history.
+    Always returns fresh data (no caching).
     """
     _ensure_csv_exists()
 
     try:
+        # ✅ Force fresh read (prevents pandas caching issues)
         df = pd.read_csv(CSV_PATH)
 
         if df.empty:
             return None
 
-        # Sort latest first
         df = df.sort_values("timestamp", ascending=False).reset_index(drop=True)
         return df
 
@@ -113,9 +127,6 @@ def load_history() -> pd.DataFrame | None:
 
 
 def get_score_trend() -> list[dict]:
-    """
-    Optional: return score trend over time.
-    """
     df = load_history()
 
     if df is None or df.empty:

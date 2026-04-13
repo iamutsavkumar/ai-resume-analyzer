@@ -157,12 +157,12 @@ def render_automation_section():
     This is purely informational — shows how the tool can be extended
     using workflow automation platforms like n8n or Zapier.
     """
-    st.markdown("## 🔗 Extend With Automation")
+    st.markdown("##  Extend With Automation")
 
     st.markdown("""
     <div class="automation-card">
         <h4 style="margin-top: 0; font-family: 'DM Serif Display', serif;">
-            🤖 How to Automate This Tool Further
+            How to Automate This Tool Further
         </h4>
         <p style="color: #4a5568; margin-bottom: 1.5rem;">
             This tool can be extended into a full automation pipeline using 
@@ -176,7 +176,7 @@ def render_automation_section():
 
     with col1:
         st.markdown("""
-        #### 📧 Auto Email Feedback
+        #### Auto Email Feedback
         **n8n Workflow:**
         1. User submits resume via form
         2. n8n triggers this analyzer via webhook
@@ -189,7 +189,7 @@ def render_automation_section():
 
     with col2:
         st.markdown("""
-        #### 📈 Track Improvement Over Time
+        #### Track Improvement Over Time
         **n8n Workflow:**
         1. User re-analyzes resume monthly
         2. Each result saved to Google Sheets
@@ -202,7 +202,7 @@ def render_automation_section():
 
     with col3:
         st.markdown("""
-        #### 🔔 Job Match Alerts
+        ####  Job Match Alerts
         **n8n Workflow:**
         1. Extract skills from resume analysis
         2. n8n searches LinkedIn/job APIs daily
@@ -213,7 +213,7 @@ def render_automation_section():
         **Tools:** n8n + LinkedIn API + Slack/Telegram
         """)
 
-    with st.expander("📖 How to Set Up n8n for This Project"):
+    with st.expander(" How to Set Up n8n for This Project"):
         st.markdown("""
         **Step 1: Install n8n locally**
         ```bash

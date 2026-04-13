@@ -185,7 +185,7 @@ Skills extracted → Job board API → Matching → Slack/Telegram notification
 
 - **Python 3.10+**
 - **Streamlit** — UI framework
-- **OpenAI GPT-4o-mini** — AI analysis engine
+- **Google Gemini** — AI analysis engine
 - **PyMuPDF / pdfplumber** — PDF parsing
 - **Pandas** — CSV data storage
 - **n8n** (optional) — workflow automation
