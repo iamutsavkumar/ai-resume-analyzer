@@ -126,7 +126,7 @@ Open: http://localhost:8501
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 * **Python**
 * **Streamlit**
