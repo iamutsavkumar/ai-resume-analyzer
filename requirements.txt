@@ -1,18 +1,24 @@
-# AI Resume Analyzer - Python Dependencies
+#  AI Resume Analyzer - Python Dependencies
+
 # Install with: pip install -r requirements.txt
 
-# ── Web UI ──────────────────────────────────────────────────────────────────
+# ── Web UI ────────────────────────────────────────────────────────────────
+
 streamlit>=1.35.0
 
-# ── AI / LLM ────────────────────────────────────────────────────────────────
-openai>=1.30.0
+# ── AI / LLM (UPDATED → Gemini instead of OpenAI) ─────────────────────────
 
-# ── PDF Extraction ───────────────────────────────────────────────────────────
+google-generativeai>=0.7.0
+
+# ── PDF Extraction ───────────────────────────────────────────────────────
+
 PyMuPDF>=1.24.0          # Primary PDF extractor (fast, accurate)
 pdfplumber>=0.11.0       # Fallback PDF extractor
 
-# ── Data Handling ────────────────────────────────────────────────────────────
+# ── Data Handling ────────────────────────────────────────────────────────
+
 pandas>=2.2.0
 
-# ── Utilities ────────────────────────────────────────────────────────────────
+# ── Utilities ────────────────────────────────────────────────────────────
+
 python-dotenv>=1.0.0     # Optional: load API key from .env file
