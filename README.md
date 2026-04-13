@@ -157,12 +157,6 @@ Open: http://localhost:8501
 
 ---
 
-##  License
-
-MIT License — free to use and modify.
-
----
-
 ##  Author
 
-Built with ❤️ using Streamlit + AI
+Utsav Kumar
