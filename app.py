@@ -40,6 +40,32 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+st.markdown("""
+<style>
+
+/* Fix headings */
+h1, h2, h3, h4, h5, h6 {
+    color: #e5e7eb !important;
+}
+
+/* Fix paragraph text only */
+p {
+    color: #d1d5db !important;
+}
+
+/* Fix labels */
+label {
+    color: #d1d5db !important;
+}
+
+/* Fix your custom section labels */
+.section-label-text {
+    color: #e5e7eb !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 # ─── CSS ──────────────────────────────────────────────────────────────────────
 st.markdown("""
 <style>
