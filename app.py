@@ -63,34 +63,42 @@ label {
     color: #e5e7eb !important;
 }
 
-/* ---------------- NEW CSS BELOW ---------------- */
+/* ---------------- TABS ---------------- */
 
-/* Tabs container */
 div[data-baseweb="tab-list"] {
     background-color: #1f2937 !important;
     border-radius: 12px !important;
     padding: 4px !important;
 }
 
-/* Individual tabs */
 button[data-baseweb="tab"] {
     background-color: transparent !important;
     color: #9ca3af !important;
     border-radius: 8px !important;
 }
 
-/* Active tab */
 button[aria-selected="true"] {
     background-color: #111827 !important;
     color: #ffffff !important;
 }
 
-/* File uploader box */
-section[data-testid="stFileUploader"] {
+/* ---------------- FILE UPLOADER FIX ---------------- */
+
+/* OUTER container (main fix) */
+div[data-testid="stFileUploader"] > div {
     background-color: #111827 !important;
     border-radius: 12px !important;
     border: 1px dashed #374151 !important;
-    padding: 20px !important;
+}
+
+/* Remove white wrapper */
+div[data-testid="stFileUploader"] {
+    background-color: transparent !important;
+}
+
+/* Inner section */
+div[data-testid="stFileUploader"] section {
+    background-color: #111827 !important;
 }
 
 /* Upload button */
