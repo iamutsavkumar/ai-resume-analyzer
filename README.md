@@ -7,7 +7,7 @@ Upload your resume, select a target role, and receive **instant, structured feed
 
 ## Live Demo
 
-**Try the app here:** [https://your-app-link.streamlit.app](https://resume-analyzer-utsavkumar.streamlit.app/)
+**Try the app here:** [https://utsav-kumar-link.streamlit.app](https://resume-analyzer-utsavkumar.streamlit.app/)
 
 ---
 
