@@ -1,57 +1,63 @@
-#  AI Resume Analyzer with Smart Feedback & Automation
+# AI Resume Analyzer with Smart Feedback & Automation
 
 An intelligent resume analysis tool built with **Python**, **Streamlit**, and **AI (Gemini/OpenAI)**.
 Upload your resume, select a target role, and receive **instant, structured feedback** with scoring, improvements, and insights.
 
 ---
 
-##  UI Preview
+## Live Demo
+
+**Try the app here:** [https://your-app-link.streamlit.app](https://resume-analyzer-utsavkumar.streamlit.app/)
+
+---
+
+## UI Preview
 
 ![UI Preview](assets/ui.png)
 
 ---
 
-##  Features
+## Features
 
-*  Upload PDF or paste resume text
-*  AI-powered resume scoring (0–100)
-*  Section-wise feedback (Skills, Experience, Projects, etc.)
-*  Missing skills detection for target role
-*  Bullet point improvement suggestions
-*  Auto-save analysis history (CSV)
-*  Sidebar history viewer
-*  Export analysis as PDF
-*  Automation-ready (n8n / Zapier workflows)
+* Upload PDF or paste resume text
+* AI-powered resume scoring (0–100)
+* Section-wise feedback (Skills, Experience, Projects, etc.)
+* Missing skills detection for target role
+* Bullet point improvement suggestions
+* Auto-save analysis history (CSV)
+* Sidebar history viewer
+* Export analysis as PDF
+* Automation-ready (n8n / Zapier workflows)
 
 ---
 
-##  Project Structure
+## Project Structure
 
 ```
 ai_resume_analyzer/
 │
-├── app.py                   #  Main Streamlit app
+├── app.py                   # Main Streamlit app
 │
 ├── utils/
-│   ├── analyzer.py          #  AI analysis logic
-│   ├── pdf_extractor.py     #  PDF text extraction
-│   ├── storage.py           #  CSV storage + history
-│   └── display.py           #  UI rendering functions
+│   ├── analyzer.py          # AI analysis logic
+│   ├── pdf_extractor.py     # PDF text extraction
+│   ├── storage.py           # CSV storage + history
+│   └── display.py           # UI rendering functions
 │
 ├── assets/
-│   └── ui.png               #  UI preview image
+│   └── ui.png               # UI preview image
 │
 ├── data/
-│   └── results.csv          #  Stored results
+│   └── results.csv          # Stored results
 │
-├── requirements.txt         #  Dependencies
-├── .env.example             #  Environment variables template
-└── README.md                #  Documentation
+├── requirements.txt         # Dependencies
+├── .env.example             # Environment variables template
+└── README.md                # Documentation
 ```
 
 ---
 
-##  Quick Start
+## ⚡ Quick Start
 
 ### 1. Clone the Repository
 
@@ -111,42 +117,40 @@ Open: http://localhost:8501
 
 ---
 
-##  How It Works
+## How It Works
 
 1. Resume text is extracted from PDF or input
-2. Sent to AI model for structured analysis 
+2. Sent to AI model for structured analysis
 3. JSON response is parsed and validated
 4. UI renders:
 
    * Score
    * Feedback
    * Missing skills
-   * Improved bullets 
-5. Results stored locally in CSV 
+   * Improved bullets
+5. Results stored locally in CSV
 
 ---
 
-##  Tech Stack
+## Tech Stack
 
-* **Python**
-* **Streamlit**
-* **Google Gemini API**
-* **PyMuPDF / pdfplumber**
-* **Pandas**
-
----
-
-##  Automation Ideas
-
-*  Auto-email resume feedback
-*  Track improvement over time
-*  Job match alerts
-
-(See automation section in app UI)
+* Python
+* Streamlit
+* Google Gemini API
+* PyMuPDF / pdfplumber
+* Pandas
 
 ---
 
-##  Troubleshooting
+## Automation Ideas
+
+* Auto-email resume feedback
+* Track improvement over time
+* Job match alerts
+
+---
+
+## Troubleshooting
 
 | Issue            | Fix                    |
 | ---------------- | ---------------------- |
@@ -157,6 +161,12 @@ Open: http://localhost:8501
 
 ---
 
-##  Author
+## Author
 
-Utsav Kumar
+**Utsav Kumar**
+
+---
+
+## If you like this project
+
+Give it a ⭐ on GitHub!
