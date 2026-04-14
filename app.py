@@ -84,7 +84,7 @@ button[aria-selected="true"] {
 
 /* ---------------- FILE UPLOADER FIX ---------------- */
 
-/* OUTER container (main fix) */
+/* OUTER container */
 div[data-testid="stFileUploader"] > div {
     background-color: #111827 !important;
     border-radius: 12px !important;
@@ -108,6 +108,29 @@ section[data-testid="stFileUploader"] button {
     border: 1px solid #374151 !important;
 }
 
+/* ----------- ADD THIS FINAL FIX BELOW ----------- */
+
+/* Dropzone (main white dashed area) */
+div[data-testid="stFileUploaderDropzone"] {
+    background-color: #111827 !important;
+    border: 1px dashed #374151 !important;
+}
+
+/* Inner drop area */
+div[data-testid="stFileUploaderDropzone"] > div {
+    background-color: #111827 !important;
+}
+
+/* Remove any hidden white layers */
+div[data-testid="stFileUploader"] * {
+    background-color: transparent !important;
+}
+
+/* Reapply dark container */
+div[data-testid="stFileUploader"] > div {
+    background-color: #111827 !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -121,8 +144,8 @@ st.markdown("""
 
 html, body, [class*="css"] {
     font-family: 'DM Sans', sans-serif;
-    background-color: #f7f8fa;
-    color: #1a1d23;
+    background-color: #020617;
+    color: #e5e7eb;
 }
 
 /* Hide Streamlit chrome */
@@ -157,8 +180,8 @@ h1, h2, h3, h4 { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
 }
 .hero-eyebrow {
     display: inline-block;
-    background: #eef2ff;
-    color: #4f46e5;
+    background: rgba(255, 255, 255, 0.08);
+    color: #a78bfa;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -167,11 +190,12 @@ h1, h2, h3, h4 { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
     border-radius: 100px;
     margin-bottom: 1.5rem;
 }
+
 .hero h1 {
     font-family: 'Syne', sans-serif;
     font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 800;
-    color: #0f1117;
+    color: #e5e7eb;
     margin: 0 0 1rem;
     line-height: 1.08;
     letter-spacing: -0.03em;
@@ -199,7 +223,7 @@ h1 a {
 }
 .hero p {
     font-size: 1.1rem;
-    color: #6b7280;
+    color: #9ca3af;
     max-width: 520px;
     margin: 0 auto 0.5rem;
     line-height: 1.6;
@@ -267,8 +291,8 @@ h1 a {
 
 /* ── Cards ── */
 .card {
-    background: #ffffff;
-    border: 1px solid #eaecf0;
+    background: #111827 !important;
+    border: 1px solid #374151 !important;
     border-radius: 16px;
     padding: 1.75rem;
     margin-bottom: 1.25rem;
@@ -289,7 +313,7 @@ h1 a {
     font-family: 'Syne', sans-serif;
     font-size: 1.05rem;
     font-weight: 700;
-    color: #111827;
+    color: #e5e7eb;
     margin-bottom: 0.35rem;
 }
 
@@ -519,17 +543,17 @@ textarea:focus {
     border: 2px dashed #d1d5db;
     border-radius: 14px;
     padding: 1.5rem;
-    background: #fafafa;
+    background: #0f172a;
     transition: all 0.2s;
 }
 [data-testid="stFileUploader"]:hover {
     border-color: #4f46e5;
-    background: #fafafe;
+    background: #111827; 
 }
 
 /* ── Tabs ── */
 .stTabs [data-baseweb="tab-list"] {
-    background: #f3f4f6;
+    background: #1f2937 !important;
     border-radius: 10px;
     padding: 4px;
     gap: 4px;
@@ -542,13 +566,15 @@ textarea:focus {
     font-size: 0.82rem !important;
     letter-spacing: 0.02em !important;
     padding: 0.45rem 1.1rem !important;
-    color: #6b7280 !important;
+
+    color: #9ca3af !important;   /* 🔥 lighter gray */
+
     border: none !important;
     background: transparent !important;
 }
 .stTabs [aria-selected="true"] {
-    background: white !important;
-    color: #111827 !important;
+    background: #111827 !important;
+    color: white !important;
     box-shadow: 0 1px 4px rgba(0,0,0,0.1) !important;
 }
 .stTabs [data-baseweb="tab-panel"] { padding-top: 1rem !important; }
@@ -582,7 +608,7 @@ hr { border: none; border-top: 1px solid #f0f0f3; margin: 2.5rem 0; }
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: 1.1rem;
-    color: #111827;
+    color: #e5e7eb !important;
     white-space: nowrap;
 }
 .section-label-line {
@@ -618,30 +644,32 @@ details summary { cursor: pointer; }
     margin-bottom: -10px !important;
 }
 
+/* SECONDARY BUTTON (dark theme fixed) */
 div[data-testid="stButton"] > button {
-    
+
     margin-left: 40px;
     margin-top: 5px;
 
-    background: white !important;
-    color: #4f46e5 !important;
+    background: #111827 !important;          /* 🔥 dark */
+    color: #e5e7eb !important;
 
-    border: 1.5px solid #7c3aed !important;
+    border: 1px solid #374151 !important;
     border-radius: 12px !important;
 
     min-width: 100px !important;
-    padding: 0  !important;
+    padding: 0.5rem 0.6rem !important;
 
     font-family: 'Syne', sans-serif !important;
     font-weight: 700 !important;
 
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
 
     transition: all 0.25s ease-in-out !important;
 }
 
+/* HOVER (premium effect) */
 div[data-testid="stButton"] > button:hover {
-    
+
     background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%) !important;
     color: white !important;
 
@@ -650,6 +678,7 @@ div[data-testid="stButton"] > button:hover {
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(79,70,229,0.45);
 }
+
         
 </style>
 """, unsafe_allow_html=True)
@@ -986,7 +1015,7 @@ if st.session_state.analysis_done:
                     <div class="score-tier {tier_class}">{tier_label}</div>
                 </div>
                 <div style="font-size:0.8rem;color:#6b7280;margin-top:0.5rem;">
-                    Target: <b style="color:#111827;">{job_role_display}</b>
+                    Target: <b style="color:#e5e7eb">{job_role_display}</b>
                 </div>
             </div>
             """, unsafe_allow_html=True)
@@ -1001,7 +1030,7 @@ if st.session_state.analysis_done:
             st.markdown(f"""
             <div class="card">
                 <div class="card-label">AI Summary</div>
-                <p style="font-size:0.93rem;line-height:1.75;color:#374151;margin:0;">
+                <p style="font-size:0.93rem;line-height:1.75;color:#9ca3af;margin:0;">
                     {result.get("summary", "")}
                 </p>
             </div>
