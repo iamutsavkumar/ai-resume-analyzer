@@ -48,19 +48,56 @@ h1, h2, h3, h4, h5, h6 {
     color: #e5e7eb !important;
 }
 
-/* Fix paragraph text only */
+/* Paragraph text */
 p {
     color: #d1d5db !important;
 }
 
-/* Fix labels */
+/* Labels */
 label {
     color: #d1d5db !important;
 }
 
-/* Fix your custom section labels */
+/* Section labels */
 .section-label-text {
     color: #e5e7eb !important;
+}
+
+/* ---------------- NEW CSS BELOW ---------------- */
+
+/* Tabs container */
+div[data-baseweb="tab-list"] {
+    background-color: #1f2937 !important;
+    border-radius: 12px !important;
+    padding: 4px !important;
+}
+
+/* Individual tabs */
+button[data-baseweb="tab"] {
+    background-color: transparent !important;
+    color: #9ca3af !important;
+    border-radius: 8px !important;
+}
+
+/* Active tab */
+button[aria-selected="true"] {
+    background-color: #111827 !important;
+    color: #ffffff !important;
+}
+
+/* File uploader box */
+section[data-testid="stFileUploader"] {
+    background-color: #111827 !important;
+    border-radius: 12px !important;
+    border: 1px dashed #374151 !important;
+    padding: 20px !important;
+}
+
+/* Upload button */
+section[data-testid="stFileUploader"] button {
+    background-color: #1f2937 !important;
+    color: white !important;
+    border: 1px solid #374151 !important;
 }
 
 </style>
