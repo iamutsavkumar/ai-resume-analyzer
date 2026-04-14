@@ -6,6 +6,11 @@ Run with: streamlit run app.py
 """
 
 import streamlit as st
+from reportlab.platypus import (SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle)
+from reportlab.lib import colors
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.pagesizes import A4
+import io
 from datetime import datetime
 
 
@@ -101,11 +106,22 @@ div[data-testid="stFileUploader"] section {
     background-color: #111827 !important;
 }
 
-/* Upload button */
-section[data-testid="stFileUploader"] button {
+/* Upload button base */
+div[data-testid="stFileUploader"] button {
     background-color: #1f2937 !important;
-    color: white !important;
     border: 1px solid #374151 !important;
+    color: white !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Hover effect */
+div[data-testid="stFileUploader"] button:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+    border-color: transparent !important;
+    color: white !important;
+
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(79,70,229,0.35);
 }
 
 /* ----------- ADD THIS FINAL FIX BELOW ----------- */
@@ -121,9 +137,8 @@ div[data-testid="stFileUploaderDropzone"] > div {
     background-color: #111827 !important;
 }
 
-/* Remove any hidden white layers */
-div[data-testid="stFileUploader"] * {
-    background-color: transparent !important;
+div[data-testid="stFileUploader"] > div {
+    background-color: #111827 !important;
 }
 
 /* Reapply dark container */
@@ -484,11 +499,18 @@ div[data-testid="stButton"] > button * {
 }
 
 /* 3. Hover effect */
-section[data-testid="stAppViewContainer"] 
 div[data-testid="stButton"] > button:hover {
-    background: linear-gradient(135deg, #4338ca 0%, #6d28d9 100%) !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 10px 25px rgba(79,70,229,0.45) !important;
+
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%) !important;
+    color: white !important;
+
+    border: 1px solid transparent !important;  /* keep same size */
+
+    transform: scale(1.02);  /* 🔥 smooth, no layout shift */
+
+    box-shadow: 0 10px 25px rgba(79,70,229,0.45);
+
+    transition: all 0.2s ease;
 }
 
 /* 4. PROTECT other buttons (IMPORTANT) */
@@ -646,9 +668,7 @@ details summary { cursor: pointer; }
 
 /* SECONDARY BUTTON (dark theme fixed) */
 div[data-testid="stButton"] > button {
-
-    margin-left: 40px;
-    margin-top: 5px;
+    
 
     background: #111827 !important;          /* 🔥 dark */
     color: #e5e7eb !important;
@@ -673,13 +693,48 @@ div[data-testid="stButton"] > button:hover {
     background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%) !important;
     color: white !important;
 
-    border: none !important;
+    border: 1px solid transparent !important;  /* ✅ keep size */
 
-    transform: translateY(-2px);
+    transform: scale(1.02);  /* ✅ no movement */
+
     box-shadow: 0 10px 25px rgba(79,70,229,0.45);
 }
+                    
+/* Fix ONLY bottom buttons area */
+.block-container div[data-testid="stButton"]:last-child {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
 
-        
+/* FIX DOWNLOAD BUTTON (dark theme) */
+div[data-testid="stDownloadButton"] > button {
+
+    background: #111827 !important;
+    color: #e5e7eb !important;
+
+    border: 1px solid #374151 !important;
+    border-radius: 12px !important;
+
+    padding: 0.5rem 1.2rem !important;
+
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 700 !important;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.25) !important;
+
+    transition: all 0.25s ease-in-out !important;
+}
+
+/* Hover */
+div[data-testid="stDownloadButton"] > button:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+    color: white !important;
+    border: none !important;
+}
+button {
+    will-change: transform;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -897,23 +952,23 @@ if not st.session_state.analysis_done or "loaded_result" not in st.session_state
         with left_col:
             if not key_ready:
                 st.markdown(
-                    '<p style="color:#9ca3af; margin:2px 0 0 0; line-height:1.3;">⬡ Enter API key</p>',
+                    '<p style="color:#9ca3af; margin:10px 0 0 15px; line-height:1.3;">⬡ Enter API key</p>',
                     unsafe_allow_html=True
                 )
             else:
                 st.markdown(
-                    '<p style="color:#16a34a; margin:2px 0 0 0; line-height:1.3;">✓ API key added</p>',
+                    '<p style="color:#16a34a; margin:10px 0 0 15px; line-height:1.3;">✓ API key added</p>',
                     unsafe_allow_html=True
                 )
 
             if not role_ready:
                 st.markdown(
-                    '<p style="color:#9ca3af; margin:2px 0 0 0; line-height:1.3;">⬡ Select role</p>',
+                    '<p style="color:#9ca3af; margin:10px 0 0 15px; line-height:1.3;">⬡ Select role</p>',
                     unsafe_allow_html=True
                 )
             else:
                 st.markdown(
-                    '<p style="color:#16a34a; margin:2px 0 0 0; line-height:1.3;">✓ Role selected</p>',
+                    '<p style="color:#16a34a; margin:10px 0 0 15px; line-height:1.3;">✓ Role selected</p>',
                     unsafe_allow_html=True
                 )
         with right_col:
@@ -923,6 +978,7 @@ if not st.session_state.analysis_done or "loaded_result" not in st.session_state
                 disabled=(not resume_ready or not role_ready or not key_ready)
                 
                 )
+
 # ─── Run Analysis ─────────────────────────────────────────────────────────────
 if analyze_clicked:
     job_role = st.session_state.current_job_role
@@ -952,6 +1008,8 @@ if analyze_clicked:
         #     improved_bullets=result.get("improved_bullets", []),
         # )
         st.rerun()
+
+
 
 # ─── STEP 3: Results ──────────────────────────────────────────────────────────
 if st.session_state.analysis_done:
@@ -1036,6 +1094,7 @@ if st.session_state.analysis_done:
             </div>
             """, unsafe_allow_html=True)
 
+
         # ─── Results Tabs ───────────────────────────────────────────────────
         tab1, tab2, tab3, tab4 = st.tabs([
             "   Section Feedback  ",
@@ -1100,13 +1159,7 @@ if st.session_state.analysis_done:
 
         # ── Tab 4: Export ──
         with tab4:
-            from reportlab.platypus import (
-                SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
-            )
-            from reportlab.lib import colors
-            from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-            from reportlab.lib.pagesizes import A4
-            import io
+
 
             buffer = io.BytesIO()
 
