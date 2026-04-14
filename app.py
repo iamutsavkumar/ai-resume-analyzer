@@ -6,16 +6,13 @@ Run with: streamlit run app.py
 """
 
 import streamlit as st
-import pandas as pd
 from datetime import datetime
-import os
-import json
+
 
 
 # Local module imports
 from utils.pdf_extractor import extract_text_from_pdf
 from utils.analyzer import analyze_resume
-from utils.storage import save_to_csv, load_history
 from utils.display import (
     render_section_feedback,
     render_missing_skills,
@@ -32,6 +29,8 @@ if "result" not in st.session_state:
     st.session_state.result = None
 if "current_job_role" not in st.session_state:
     st.session_state.current_job_role = ""
+if "api_key_input" not in st.session_state:
+    st.session_state.api_key_input = ""
 
 # ─── Page Configuration ───────────────────────────────────────────────────────
 st.set_page_config(
@@ -73,12 +72,8 @@ html, body, [class*="css"] {
 [data-testid="collapsedControl"]:hover {
     opacity: 1;
 }
-section[data-testid="stSidebar"] { 
-    width: 320px !important; 
-    background: #f9fafb;
-    border-right: 1px solid #e5e7eb;
-}
-.block-container { padding-top: 0 !important; max-width: 960px !important; margin: 0 auto; }
+
+.block-container { padding-top: 0 !important; max-width: 1200px !important; margin: 0 auto; }
 
 /* ── Typography ── */
 h1, h2, h3, h4 { font-family: 'Syne', sans-serif; letter-spacing: -0.02em; }
@@ -370,24 +365,21 @@ h1 a {
 section[data-testid="stAppViewContainer"] 
 div[data-testid="stButton"] > button {
 
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
-    background-color: #4f46e5 !important;
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%) !important;
     color: white !important;
 
     border: none !important;
     border-radius: 12px !important;
 
     min-width: 200px !important;
-    padding: 0.7rem 1.6rem !important;
+    padding: 0.9rem 1.6rem !important;
 
     font-family: 'Syne', sans-serif !important;
     font-weight: 700 !important;
-    font-size: 1rem !important;
 
     box-shadow: 0 6px 18px rgba(79,70,229,0.35) !important;
 
     transition: all 0.2s ease-in-out !important;
-    opacity: 1 !important;
 }
 
 /* 2. Fix text color inside button */
@@ -408,11 +400,6 @@ div[data-testid="stButton"] > button:hover {
 .stDownloadButton > button {
     background: white !important;
     color: #4f46e5 !important;
-}
-
-section[data-testid="stSidebar"] div[data-testid="stButton"] > button {
-    background: white !important;
-    color: #111827 !important;
 }
               
 /* ── Inputs (SAFE TARGETING) ── */
@@ -498,30 +485,6 @@ textarea:focus {
 /* ── Divider ── */
 hr { border: none; border-top: 1px solid #f0f0f3; margin: 2.5rem 0; }
 
-/* ── Sidebar ── */
-[data-testid="stSidebarContent"] { padding: 1.5rem 1rem; }
-.history-card {
-    background: white;
-    border: 1px solid #eaecf0;
-    border-radius: 12px;
-    padding: 12px 14px;
-    margin-bottom: 10px;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-.history-card:hover { border-color: #c7d2fe; box-shadow: 0 2px 12px rgba(79,70,229,0.1); }
-.history-time { font-size: 0.72rem; color: #9ca3af; margin-bottom: 3px; }
-.history-role { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.9rem; color: #111827; }
-.history-score {
-    display: inline-block;
-    margin-top: 6px;
-    background: #eef2ff;
-    color: #4f46e5;
-    padding: 2px 10px;
-    border-radius: 100px;
-    font-size: 0.78rem;
-    font-weight: 600;
-}
 
 /* ── Success banner ── */
 .success-banner {
@@ -583,100 +546,88 @@ details summary { cursor: pointer; }
 .stDownloadButton {
     margin-bottom: -10px !important;
 }
-            
-section[data-testid="stSidebar"] div[data-testid="stButton"] > button {
+
+div[data-testid="stButton"] > button {
+    
+    margin-left: 40px;
+    margin-top: 5px;
+
     background: white !important;
-    border: 1px solid #eaecf0 !important;
+    color: #4f46e5 !important;
+
+    border: 1.5px solid #7c3aed !important;
     border-radius: 12px !important;
-    padding: 12px 14px !important;
-    margin-bottom: 10px !important;
 
-    width: 100% !important;
-    cursor: pointer !important;
+    min-width: 100px !important;
+    padding: 0  !important;
 
-    text-align: left !important;
-    line-height: 1.4 !important;
-    display: block !important;
-    color: #111827 !important;
+    font-family: 'Syne', sans-serif !important;
+    font-weight: 700 !important;
 
-    /* FIXED SMOOTH TRANSITION */
-    transition:
-        background 0.35s ease,
-        color 0.25s ease,
-        box-shadow 0.35s ease,
-        transform 0.15s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08) !important;
 
-    will-change: transform, box-shadow;
+    transition: all 0.25s ease-in-out !important;
 }
 
-section[data-testid="stSidebar"] div[data-testid="stButton"] > button:hover {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%) !important;
+div[data-testid="stButton"] > button:hover {
+    
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #a855f7 100%) !important;
     color: white !important;
-    border-color: transparent !important;
-    box-shadow: 0 6px 18px rgba(79,70,229,0.35) !important;
 
-    transform: translateY(-2px);   /* smoother lift */
+    border: none !important;
+
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(79,70,229,0.45);
 }
-
-/* IMPORTANT for inner text */
-section[data-testid="stSidebar"] div[data-testid="stButton"] > button * {
-    color: inherit !important;
-}
-
-/* click effect */
-section[data-testid="stSidebar"] div[data-testid="stButton"] > button:active {
-    transform: translateY(0px) scale(0.98);
-}
-
         
 </style>
 """, unsafe_allow_html=True)
 
 # ─── Sidebar ──────────────────────────────────────────────────────────────────
-with st.sidebar:
-    st.markdown("""
-    <div style="font-family:'Syne',sans-serif;font-weight:800;padding-left:1.5rem;font-size:1.5rem;
-                color:#111827;margin-bottom:1.5rem;padding-bottom:1rem;
-                border-bottom:1px solid #f0f0f3;">
-        AI Resume 
-    </div>
-    <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;padding-left:0.3rem;
-                letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:0.75rem;">
-        Analysis History
-    </div>
-    """, unsafe_allow_html=True)
+# with st.sidebar:
+#     st.markdown("""
+#     <div style="font-family:'Syne',sans-serif;font-weight:800;padding-left:1.5rem;font-size:1.5rem;
+#                 color:#111827;margin-bottom:1.5rem;padding-bottom:1rem;
+#                 border-bottom:1px solid #f0f0f3;">
+#         AI Resume 
+#     </div>
+#     <div style="font-family:'Syne',sans-serif;font-size:1rem;font-weight:700;padding-left:0.3rem;
+#                 letter-spacing:0.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:0.75rem;">
+#         Analysis History
+#     </div>
+#     """, unsafe_allow_html=True)
 
-    # ✅ MOVE THIS INSIDE
-    history_df = load_history()
+#     # ✅ MOVE THIS INSIDE
+#     history_df = load_history()
 
-    if history_df is not None and not history_df.empty:
-        for i, row in history_df.head(10).iterrows():
+#     if history_df is not None and not history_df.empty:
+#         for i, row in history_df.head(10).iterrows():
             
-            dt = datetime.strptime(row['timestamp'], "%Y-%m-%d %H:%M:%S")
-            formatted_time = dt.strftime("%d %b, %I:%M %p").replace(" ", "\u00A0")
+#             dt = datetime.strptime(row['timestamp'], "%Y-%m-%d %H:%M:%S")
+#             formatted_time = dt.strftime("%d %b, %I:%M %p").replace(" ", "\u00A0")
 
-            label = f"{row['job_role']} • {row['score']}/100 • {formatted_time}"
+#             label = f"{row['job_role']} • {row['score']}/100 • {formatted_time}"
 
-            if st.button(label, key=f"card_{i}"):
-                st.session_state.loaded_result = {
-                    "score": row["score"],
-                    "summary": row["summary"],
-                    "missing_skills": json.loads(row["missing_skills"]),
-                    "section_feedback": json.loads(row.get("section_feedback", "{}")),
-                    "weak_bullets": json.loads(row.get("weak_bullets", "[]")),
-                    "improved_bullets": json.loads(row.get("improved_bullets", "[]")),
-                }
-                st.session_state.current_job_role = row["job_role"]
-                st.session_state.analysis_done = True
-                st.session_state.result = None
-                st.success("Loaded!")
-    else:
-        st.markdown("""
-        <div style="font-size:0.85rem;color:#9ca3af;padding:1rem;
-                    background:#f9fafb;border-radius:10px;text-align:center;">
-            Your analyses will appear here
-        </div>
-        """, unsafe_allow_html=True)
+#             if st.button(label, key=f"card_{i}"):
+#                 st.session_state.loaded_result = {
+#                     "score": row["score"],
+#                     "summary": row["summary"],
+#                     "missing_skills": json.loads(row["missing_skills"]),
+#                     "section_feedback": json.loads(row.get("section_feedback", "{}")),
+#                     "weak_bullets": json.loads(row.get("weak_bullets", "[]")),
+#                     "improved_bullets": json.loads(row.get("improved_bullets", "[]")),
+#                 }
+#                 st.session_state.current_job_role = row["job_role"]
+#                 st.session_state.analysis_done = True
+#                 st.session_state.result = None
+#                 st.success("Loaded!")
+#     else:
+#         st.markdown("""
+#         <div style="font-size:0.85rem;color:#9ca3af;padding:1rem;
+#                     background:#f9fafb;border-radius:10px;text-align:center;">
+#             Your analyses will appear here
+#         </div>
+#         """, unsafe_allow_html=True)
 
 # ─── Hero ─────────────────────────────────────────────────────────────────────
 st.markdown("""
@@ -688,9 +639,16 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # ─── Determine step ───────────────────────────────────────────────────────────
-has_resume = bool(st.session_state.resume_text)
-# step 1 = no resume, step 2 = resume ready, step 3 = analysis done
-current_step = 3 if st.session_state.analysis_done else (2 if has_resume else 1)
+has_resume = bool(st.session_state.get("resume_text", "").strip())
+has_role = bool(st.session_state.get("current_job_role", "").strip())
+has_api = bool(st.session_state.get("api_key_input", "").strip())
+
+if st.session_state.analysis_done:
+    current_step = 3
+elif has_resume and has_role and has_api:
+    current_step = 2
+else:
+    current_step = 1
 
 def step_classes(n):
     if n < current_step:
@@ -778,12 +736,15 @@ if not st.session_state.analysis_done or "loaded_result" not in st.session_state
                 type="password",
                 placeholder="Paste your Gemini API key…",
                 label_visibility="collapsed",
+                key="api_key_input" 
             )
 
+            st.info(" This app requires your own Gemini API key. Your key is NOT stored anywhere.")
+
         # ✅ LOGIC
-        resume_ready = bool(st.session_state.resume_text)
+        resume_ready = bool(st.session_state.get("resume_text", "").strip())
         role_ready = selected_role != "Select a role..." and bool(job_role.strip())
-        key_ready = bool(api_key)
+        key_ready = bool(st.session_state.get("api_key_input", "").strip())
 
     # ── LEFT: INPUT ──
     with input_col:
@@ -804,19 +765,30 @@ if not st.session_state.analysis_done or "loaded_result" not in st.session_state
             )
 
             if uploaded_file is not None:
-                with st.spinner("Extracting text…"):
-                    text = extract_text_from_pdf(uploaded_file)
-                    st.session_state.resume_text = text
+                if "uploaded_file_name" not in st.session_state or \
+                st.session_state.uploaded_file_name != uploaded_file.name:
+
+                    with st.spinner("Extracting text…"):
+                        text = extract_text_from_pdf(uploaded_file)
+                        st.session_state.resume_text = text
+                        st.session_state.uploaded_file_name = uploaded_file.name
 
         with tab_paste:
-            text_input = st.text_area(
+
+            if "resume_input" not in st.session_state:
+                st.session_state.resume_input = ""
+
+            st.text_area(
                 "Resume text",
                 height=220,
                 placeholder="Paste your full resume here…",
                 label_visibility="collapsed",
+                key="resume_input"
             )
-            if text_input.strip():
-                st.session_state.resume_text = text_input
+
+            # 🔥 Persist safely
+            if st.session_state.resume_input.strip():
+                st.session_state.resume_text = st.session_state.resume_input
 
 
         left_col, right_col = st.columns([3, 2])
@@ -853,11 +825,13 @@ if not st.session_state.analysis_done or "loaded_result" not in st.session_state
                 )
 # ─── Run Analysis ─────────────────────────────────────────────────────────────
 if analyze_clicked:
+    job_role = st.session_state.current_job_role
+
     with st.spinner("AI is analyzing your resume…"):
         result = analyze_resume(
             resume_text=st.session_state.resume_text,
             job_role=job_role,
-            api_key=api_key,
+            api_key=st.session_state.get("api_key_input", ""),
         )
     if result.get("error"):
         st.error(f"Analysis failed: {result['error']}")
@@ -867,16 +841,16 @@ if analyze_clicked:
         st.session_state.result = result
         st.session_state.analysis_done = True
         st.session_state.current_job_role = job_role
-        save_to_csv(
-            resume_text=st.session_state.resume_text,
-            job_role=job_role,
-            score=result.get("score", 0),
-            summary=result.get("summary", ""),
-            missing_skills=result.get("missing_skills", []),
-            section_feedback=result.get("section_feedback", {}),
-            weak_bullets=result.get("weak_bullets", []),
-            improved_bullets=result.get("improved_bullets", []),
-        )
+        # save_to_csv(
+        #     resume_text=st.session_state.resume_text,
+        #     job_role=job_role,
+        #     score=result.get("score", 0),
+        #     summary=result.get("summary", ""),
+        #     missing_skills=result.get("missing_skills", []),
+        #     section_feedback=result.get("section_feedback", {}),
+        #     weak_bullets=result.get("weak_bullets", []),
+        #     improved_bullets=result.get("improved_bullets", []),
+        # )
         st.rerun()
 
 # ─── STEP 3: Results ──────────────────────────────────────────────────────────
