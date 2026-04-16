@@ -19,15 +19,15 @@ Upload your resume, select a target role, and receive **instant, structured feed
 
 ## Features
 
-* Upload PDF or paste resume text
-* AI-powered resume scoring (0–100)
+* LLM-powered resume analysis with structured JSON output
+* Role-specific evaluation and scoring (0–100)
+* Skill gap detection based on target job role
 * Section-wise feedback (Skills, Experience, Projects, etc.)
-* Missing skills detection for target role
-* Bullet point improvement suggestions
-* Auto-save analysis history (CSV)
-* Sidebar history viewer
-* Export analysis as PDF
-* Automation-ready (n8n / Zapier workflows)
+* AI-generated bullet point improvements
+* PDF upload + text extraction (PyMuPDF/pdfplumber)
+* Export detailed analysis as PDF report
+* Persistent analysis history (CSV storage)
+* Automation-ready workflows (n8n / Zapier)
 
 ---
 
@@ -119,16 +119,16 @@ Open: http://localhost:8501
 
 ## How It Works
 
-1. Resume text is extracted from PDF or input
-2. Sent to AI model for structured analysis
-3. JSON response is parsed and validated
-4. UI renders:
-
-   * Score
-   * Feedback
-   * Missing skills
-   * Improved bullets
-5. Results stored locally in CSV
+1. Resume text is extracted from PDF or user input
+2. A prompt-engineered request is sent to a Gemini LLM
+3. The LLM returns structured JSON containing:
+   - Score
+   - Summary
+   - Section-wise feedback
+   - Missing skills
+   - Improved bullet points
+4. The response is parsed, validated, and rendered in the UI
+5. Results are stored locally for history tracking
 
 ---
 
@@ -136,10 +136,10 @@ Open: http://localhost:8501
 
 * Python
 * Streamlit
-* Google Gemini API
+* Google Gemini API (LLM)
+* Prompt Engineering
 * PyMuPDF / pdfplumber
 * Pandas
-
 ---
 
 ## Automation Ideas
